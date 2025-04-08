@@ -8,11 +8,19 @@ import cors from 'cors';
 const app = express();
 
 app.use(express.json());
+// app.use(cors({
+//     origin: '*', 
+//     methods: ['GET', 'POST'],
+//     allowedHeaders: ['Content-Type']
+//   }));
+
 app.use(cors({
-    origin: '*', 
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type']
-  }));
+  origin: ['http://localhost:5173', 'https://andres101010.github.io/portafolio-front/'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+app.options('*', cors()); // Habilita preflight para cualquier ruta
 
 
 app.use(crearSolicitud)
