@@ -48,11 +48,8 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: ["http://localhost:5173", "https://andres101010.github.io/portafolio-front/"],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  methods: ["GET", "POST", "OPTIONS"]
 }));
-app.options("*", cors());
 app.use(router);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
