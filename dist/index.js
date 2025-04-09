@@ -1,12 +1,5 @@
 import dotenv from 'dotenv';
 import express, { Router } from 'express';
-// import * as nodemailer from 'nodemailer';
-// Al inicio del archivo
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const nodemailer = require('nodemailer');
-
-
 import cors from 'cors';
 
 var __async$1 = (__this, __arguments, generator) => {
@@ -30,7 +23,12 @@ var __async$1 = (__this, __arguments, generator) => {
   });
 };
 dotenv.config();
+const getNodemailer = () => __async$1(void 0, null, function* () {
+  const nodemailer = yield import('nodemailer');
+  return nodemailer.default || nodemailer;
+});
 const sendEmail = (body) => __async$1(void 0, null, function* () {
+  const nodemailer = yield getNodemailer();
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
