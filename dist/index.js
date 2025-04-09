@@ -1,7 +1,11 @@
 import dotenv from 'dotenv';
 import express, { Router } from 'express';
 // import * as nodemailer from 'nodemailer';
-import nodemailer from 'nodemailer';
+// Al inicio del archivo
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const nodemailer = require('nodemailer');
+
 
 import cors from 'cors';
 
