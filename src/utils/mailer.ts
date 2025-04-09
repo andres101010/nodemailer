@@ -6,8 +6,9 @@ dotenv.config();
 
 const getNodemailer = async () => {
   const nodemailer = await import('nodemailer');
-  return nodemailer.default || nodemailer; // compatible para ambas formas
+  return nodemailer.default; // ← FORZA usar solo el default
 };
+
 
 const sendEmail = async (body: any) => {
   const nodemailer = await getNodemailer();

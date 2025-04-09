@@ -2,33 +2,13 @@ import dotenv from 'dotenv';
 import express, { Router } from 'express';
 import cors from 'cors';
 
-var __async$1 = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
-};
 dotenv.config();
-const getNodemailer = () => __async$1(void 0, null, function* () {
-  const nodemailer = yield import('nodemailer');
-  return nodemailer.default || nodemailer;
-});
-const sendEmail = (body) => __async$1(void 0, null, function* () {
-  const nodemailer = yield getNodemailer();
+const getNodemailer = async () => {
+  const nodemailer = await import('nodemailer');
+  return nodemailer.default;
+};
+const sendEmail = async (body) => {
+  const nodemailer = await getNodemailer();
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -45,44 +25,24 @@ const sendEmail = (body) => __async$1(void 0, null, function* () {
     text: body.comentario,
     replyTo: body.correo
   };
-  const info = yield transporter.sendMail(mailOptions);
+  const info = await transporter.sendMail(mailOptions);
   return info;
-});
-
-var __async = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
 };
-const recivedSolicitud = (req, res) => __async(void 0, null, function* () {
+
+const recivedSolicitud = async (req, res) => {
   try {
     const { nombre, correo, telefono, solicitud, comentario } = req.body;
     if (!nombre || !correo) {
       res.status(400).json({ message: "El Nombre o el Correo son necesarios!!!" });
       return;
     }
-    const info = yield sendEmail(req.body);
+    const info = await sendEmail(req.body);
     res.status(200).json({ message: "Solicitud Enviada con exito!!!" });
   } catch (error) {
     console.error("Error en recivedSolicitud:", error);
     res.status(500).json({ message: "Error al recibir la solicitud", error });
   }
-});
+};
 
 const router = Router();
 router.post("/contacto/crear-solicitud", recivedSolicitud);
