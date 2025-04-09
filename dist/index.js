@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import express, { Router } from 'express';
-import * as nodemailer from 'nodemailer';
+// import * as nodemailer from 'nodemailer';
+import nodemailer from 'nodemailer';
+
 import cors from 'cors';
 
 var __async$1 = (__this, __arguments, generator) => {
