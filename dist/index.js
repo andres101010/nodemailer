@@ -1,61 +1,22 @@
-import dotenv from 'dotenv';
-import express, { Router } from 'express';
-import cors from 'cors';
-
-dotenv.config();
-const getNodemailer = async () => {
-  const nodemailer = await import('nodemailer');
-  return nodemailer.default;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-const sendEmail = async (body) => {
-  const nodemailer = await getNodemailer();
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS
-    }
-  });
-  const mailOptions = {
-    from: `"Formulario Web" <${process.env.MAIL_USER}>`,
-    to: process.env.MAIL_USER,
-    subject: body.solicitud,
-    text: body.comentario,
-    replyTo: body.correo
-  };
-  const info = await transporter.sendMail(mailOptions);
-  return info;
-};
-
-const recivedSolicitud = async (req, res) => {
-  try {
-    const { nombre, correo, telefono, solicitud, comentario } = req.body;
-    if (!nombre || !correo) {
-      res.status(400).json({ message: "El Nombre o el Correo son necesarios!!!" });
-      return;
-    }
-    const info = await sendEmail(req.body);
-    res.status(200).json({ message: "Solicitud Enviada con exito!!!" });
-  } catch (error) {
-    console.error("Error en recivedSolicitud:", error);
-    res.status(500).json({ message: "Error al recibir la solicitud", error });
-  }
-};
-
-const router = Router();
-router.post("/contacto/crear-solicitud", recivedSolicitud);
-
-dotenv.config();
-const app = express();
-app.use(express.json());
-app.use(cors({
-  origin: ["http://localhost:5173", "https://andres101010.github.io/portafolio-front/"],
-  methods: ["GET", "POST", "OPTIONS"]
+Object.defineProperty(exports, "__esModule", { value: true });
+// import app from "./app";
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const express_1 = __importDefault(require("express"));
+const routes_1 = __importDefault(require("./routes/routes"));
+const cors_1 = __importDefault(require("cors"));
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use((0, cors_1.default)({
+    origin: ['http://localhost:5173', 'https://andres101010.github.io/portafolio-front/'],
+    methods: ['GET', 'POST', 'OPTIONS'],
 }));
-app.use(router);
+app.use(routes_1.default);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log("Puerto corriendo en:", PORT);
+    console.log("Puerto corriendo en:", PORT);
 });

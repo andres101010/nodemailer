@@ -1,17 +1,12 @@
 
-// import * as nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer')
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const getNodemailer = async () => {
-  const nodemailer = await import('nodemailer');
-  return nodemailer.default; // ← FORZA usar solo el default
-};
-
 
 const sendEmail = async (body: any) => {
-  const nodemailer = await getNodemailer();
+  
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
