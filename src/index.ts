@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://andres101010.github.io/portafolio-front/'],
+  origin: ['http://localhost:5173', 'https://andres101010.github.io/portafolio-front/', 'https://andres101010.github.io'],
   methods: ['GET', 'POST', 'OPTIONS'],
 }));
 
